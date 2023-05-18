@@ -6,6 +6,7 @@ from pathlib import Path
 import requests
 from subprocess import run
 import sys
+import json
 
 
 # TODO: convert from original llama weights?
@@ -34,25 +35,27 @@ class InstructionDataConfig(Config):
     url: str = (
         'https://huggingface.co/datasets/yahma/alpaca-cleaned/resolve/main/alpaca_data_cleaned.json'
     )
+    mock_data: bool = False
 
 
 @asset
 def instruction_data(config: InstructionDataConfig, data_dir: DataDirectory) -> Path:
     output_file = data_dir.subdir("instruction_data") / "instruction_data.json"
     with open(output_file, "w") as f:
-        # f.write(requests.get(config.url, allow_redirects=True).content)
-        import json
-
-        json.dump(
-            [
-                {
-                    "instruction": "Give three tips for staying healthy.",
-                    "input": "",
-                    "output": "1. Eat a balanced and nutritious diet: Make sure your meals are inclusive of a variety of fruits and vegetables, lean protein, whole grains, and healthy fats. This helps to provide your body with the essential nutrients to function at its best and can help prevent chronic diseases.\n\n2. Engage in regular physical activity: Exercise is crucial for maintaining strong bones, muscles, and cardiovascular health. Aim for at least 150 minutes of moderate aerobic exercise or 75 minutes of vigorous exercise each week.\n\n3. Get enough sleep: Getting enough quality sleep is crucial for physical and mental well-being. It helps to regulate mood, improve cognitive function, and supports healthy growth and immune function. Aim for 7-9 hours of sleep each night.",
-                }
-            ],
-            f,
-        )
+        if not config.mock_data:
+            f.write(requests.get(config.url, allow_redirects=True).content)
+        else:
+            # for testing the whole pipeline end-to-end quickly
+            json.dump(
+                [
+                    {
+                        "instruction": "Give three tips for staying healthy.",
+                        "input": "",
+                        "output": "1. Eat a balanced and nutritious diet: Make sure your meals are inclusive of a variety of fruits and vegetables, lean protein, whole grains, and healthy fats. This helps to provide your body with the essential nutrients to function at its best and can help prevent chronic diseases.\n\n2. Engage in regular physical activity: Exercise is crucial for maintaining strong bones, muscles, and cardiovascular health. Aim for at least 150 minutes of moderate aerobic exercise or 75 minutes of vigorous exercise each week.\n\n3. Get enough sleep: Getting enough quality sleep is crucial for physical and mental well-being. It helps to regulate mood, improve cognitive function, and supports healthy growth and immune function. Aim for 7-9 hours of sleep each night.",
+                    }
+                ],
+                f,
+            )
     return output_file
 
 
