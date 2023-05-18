@@ -10,4 +10,5 @@ setup: .setup
 	touch .setup
 
 dev: setup
+	mkdir -p "$(shell pwd)/dagster_home"
 	DAGSTER_HOME="$(shell pwd)/dagster_home" venv/bin/dagster dev -m alpaca_lora -h 0.0.0.0
