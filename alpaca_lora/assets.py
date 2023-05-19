@@ -41,7 +41,7 @@ class InstructionDataConfig(Config):
 @asset
 def instruction_data(config: InstructionDataConfig, data_dir: DataDirectory) -> Path:
     output_file = data_dir.subdir("instruction_data") / "instruction_data.json"
-    with open(output_file, "w") as f:
+    with open(output_file, "wb") as f:
         if not config.mock_data:
             f.write(requests.get(config.url, allow_redirects=True).content)
         else:
