@@ -69,7 +69,6 @@ def lora_weights(
             base_model=foundation_model_weights,
             output_dir=output_dir,
             data_path=instruction_data,
-            val_set_size=0,
         )
     )
     return output_dir
