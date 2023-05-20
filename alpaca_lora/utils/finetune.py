@@ -69,18 +69,11 @@ def finetune_alpaca_lora_model(config: FinetuneConfig):
 
     prompter = Prompter(config.prompt_template_name)
 
-    device_map: Any = "auto"
-    world_size = 1
-    ddp = world_size != 1
-    if ddp:
-        device_map = {"": 0}
-        gradient_accumulation_steps = gradient_accumulation_steps // world_size
-
     model = LlamaForCausalLM.from_pretrained(
         config.base_model,
         load_in_8bit=True,
         torch_dtype=torch.float16,
-        device_map=device_map,
+        device_map="auto",
     )
 
     tokenizer = LlamaTokenizer.from_pretrained(config.base_model)
