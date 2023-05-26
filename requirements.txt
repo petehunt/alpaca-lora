@@ -11,3 +11,5 @@ gradio
 dagster
 dagit
 requests
+Faker
+scipy

@@ -16,3 +16,5 @@ todo.txt
 venv
 data/
 dagster_home/
+mock_data.json
+.git-lfs
