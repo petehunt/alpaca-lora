@@ -29,6 +29,12 @@ templates = {
         "prompt_no_input": "Ci-dessous se trouve une instruction qui décrit une tâche. Écrivez une réponse qui complète correctement la demande.\n\n### Instruction:\n{instruction}\n\n### Réponse:\n",
         "response_split": "### Réponse:",
     },
+    "custom_template": {
+        "description": "Custom template for the Dagster example",
+        #"prompt_input": "",
+        "prompt_no_input": "Below is a JSON payload describing an API request. Write a response in JSON format that appropriately responds to the request.\n\n### Request JSON:\n{instruction}\n\n### Response JSON:",
+        "response_split": "### Response JSON:",
+    },
 }
 
 

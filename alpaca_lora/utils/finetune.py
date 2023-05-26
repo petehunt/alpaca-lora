@@ -165,7 +165,7 @@ def finetune_alpaca_lora_model(config: FinetuneConfig):
         train_data = data["train"].shuffle().map(generate_and_tokenize_prompt)
         val_data = None
 
-    if not ddp and torch.cuda.device_count() > 1:
+    if torch.cuda.device_count() > 1:
         # keeps Trainer from trying its own DataParallelism when more than 1 gpu is available
         model.is_parallelizable = True
         model.model_parallel = True
@@ -190,7 +190,7 @@ def finetune_alpaca_lora_model(config: FinetuneConfig):
             output_dir=config.output_dir,
             save_total_limit=3,
             load_best_model_at_end=True if config.val_set_size > 0 else False,
-            ddp_find_unused_parameters=False if ddp else None,
+            ddp_find_unused_parameters=None,
             group_by_length=config.group_by_length,
         ),
         data_collator=transformers.DataCollatorForSeq2Seq(
